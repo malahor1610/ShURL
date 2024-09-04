@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"
+      th:replace="~{layout :: layout(~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+  <section class="w-75 align-self-center">
+    <h3 class="my-3 text-center"
+        th:text="'Put You URL here and we will shorten it'"></h3>
+    <div class="row mt-4">
+      <div class="col-xl-1"></div>
+      <div class="col-xl-10">
+        <div class="card mb-3 px-0">
+          <div class="card-body">
+            <div class="container">
+              <form class="row justify-content-end"
+                    th:action="@{'/'}"
+                    th:method="post"
+                    th:object="${input}">
+                <textarea class="form-control"
+                          name="text"
+                          rows="20"
+                          th:field="${input.url}"></textarea>
+                <button class="my-3 col-auto btn btn-primary w-auto"
+                        type="submit">Shorten
+                </button>
+              </form>
+            </div>
+            <div class="container">
+              <a th:href="${link}"
+                 th:text="${link}"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-1"></div>
+    </div>
+  </section>
+</html>
