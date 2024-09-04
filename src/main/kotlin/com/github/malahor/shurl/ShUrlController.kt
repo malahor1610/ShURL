@@ -1,6 +1,7 @@
 package com.github.malahor.shurl
 
 import org.apache.commons.lang3.RandomStringUtils
+import org.apache.commons.validator.routines.UrlValidator
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
@@ -16,18 +17,28 @@ import org.springframework.web.servlet.view.RedirectView
 class ShUrlController(private val repository: ShUrlRepository) {
 
     @GetMapping
-    fun home(model: Model, @ModelAttribute("input") input: Input, @ModelAttribute("link") link: String): String {
+    fun home(
+        model: Model,
+        @ModelAttribute("input") input: Input,
+        @ModelAttribute("link") link: String,
+        @ModelAttribute("error") error: String
+    ): String {
         model["input"] = input
         model["link"] = link
+        model["error"] = error
         return "start";
     }
 
     @PostMapping
     fun shorten(attributes: RedirectAttributes, @ModelAttribute("input") input: Input): RedirectView {
-        val shurl = ShUrl(generateShort(), input.url!!)
-        repository.save(shurl);
-        attributes.addFlashAttribute("input", input)
-        attributes.addFlashAttribute("link", shurl.short)
+        if (UrlValidator().isValid(input.url)) {
+            val shurl = ShUrl(generateShort(), input.url!!)
+            repository.save(shurl);
+            attributes.addFlashAttribute("input", input)
+            attributes.addFlashAttribute("link", shurl.short)
+        } else {
+            attributes.addFlashAttribute("error", "Invalid URL")
+        }
         return RedirectView("/")
     }
 
