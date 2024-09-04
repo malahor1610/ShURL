@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import org.springframework.web.servlet.view.RedirectView
 
 @Controller
@@ -21,11 +22,11 @@ class ShUrlController(private val repository: ShUrlRepository) {
         model: Model,
         @ModelAttribute("input") input: Input,
         @ModelAttribute("link") link: String,
-        @ModelAttribute("error") error: String
+        @ModelAttribute("error") error: String?
     ): String {
         model["input"] = input
         model["link"] = link
-        model["error"] = error
+        model["error"] = error ?: ""
         return "start";
     }
 
@@ -34,7 +35,7 @@ class ShUrlController(private val repository: ShUrlRepository) {
         if (UrlValidator().isValid(input.url)) {
             val shurl = findExisting(input.url!!) ?: save(input.url)
             attributes.addFlashAttribute("input", input)
-            attributes.addFlashAttribute("link", shurl.short)
+            attributes.addFlashAttribute("link", buildLink(shurl.short))
         } else {
             attributes.addFlashAttribute("error", "Invalid URL")
         }
@@ -53,5 +54,9 @@ class ShUrlController(private val repository: ShUrlRepository) {
         val short = RandomStringUtils.secure().nextAlphanumeric(6);
         if (repository.findById(short).isPresent) return generateShort()
         return short
+    }
+
+    private fun buildLink(short: String): String {
+        return ServletUriComponentsBuilder.fromCurrentContextPath().path(short).build().toUriString()
     }
 }
