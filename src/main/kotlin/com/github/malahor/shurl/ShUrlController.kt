@@ -50,6 +50,8 @@ class ShUrlController(private val repository: ShUrlRepository) {
     }
 
     private fun generateShort(): String {
-        return RandomStringUtils.secure().nextAlphanumeric(6);
+        val short = RandomStringUtils.secure().nextAlphanumeric(6);
+        if (repository.findById(short).isPresent) return generateShort()
+        return short
     }
 }
