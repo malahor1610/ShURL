@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class ShUrlApplication
 
 fun main(args: Array<String>) {
-	runApplication<ShUrlApplication>(*args)
+    runApplication<ShUrlApplication>(*args)
 }

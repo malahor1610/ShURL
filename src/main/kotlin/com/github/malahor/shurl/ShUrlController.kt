@@ -32,14 +32,21 @@ class ShUrlController(private val repository: ShUrlRepository) {
     @PostMapping
     fun shorten(attributes: RedirectAttributes, @ModelAttribute("input") input: Input): RedirectView {
         if (UrlValidator().isValid(input.url)) {
-            val shurl = ShUrl(generateShort(), input.url!!)
-            repository.save(shurl);
+            val shurl = findExisting(input.url!!) ?: save(input.url)
             attributes.addFlashAttribute("input", input)
             attributes.addFlashAttribute("link", shurl.short)
         } else {
             attributes.addFlashAttribute("error", "Invalid URL")
         }
         return RedirectView("/")
+    }
+
+    private fun findExisting(url: String): ShUrl? {
+        return repository.findByLong(url)
+    }
+
+    private fun save(url: String): ShUrl {
+        return repository.save(ShUrl(generateShort(), url));
     }
 
     private fun generateShort(): String {
