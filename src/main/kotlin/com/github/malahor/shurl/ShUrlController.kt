@@ -5,10 +5,7 @@ import org.apache.commons.validator.routines.UrlValidator
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import org.springframework.web.servlet.view.RedirectView
@@ -40,6 +37,13 @@ class ShUrlController(private val repository: ShUrlRepository) {
             attributes.addFlashAttribute("error", "Invalid URL")
         }
         return RedirectView("/")
+    }
+
+    @GetMapping("{id}")
+    fun redirect(@PathVariable("id") id: String): RedirectView {
+        val shurl = repository.findById(id)
+        if (shurl.isEmpty) return RedirectView("/")
+        return RedirectView(shurl.get().long)
     }
 
     private fun findExisting(url: String): ShUrl? {
