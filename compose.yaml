@@ -3,3 +3,7 @@ services:
     image: 'redis:latest'
     ports:
       - '6379'
+  shurl:
+    image: 'malahor1610/shurl:latest'
+    depends_on:
+      - redis
