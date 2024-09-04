@@ -24,4 +24,4 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Build and publish image with Gradle to Docker Hub
-        run: gradle bootBuildImage -Denv.DOCKER_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} -Denv.DOCKER_PASSWORD=${{ secrets.DOCKERHUB_PASSWORD }}
+        run: DOCKER_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} DOCKER_PASSWORD=${{ secrets.DOCKERHUB_PASSWORD }} gradle bootBuildImage
