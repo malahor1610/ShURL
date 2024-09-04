@@ -24,9 +24,18 @@
                 </button>
               </form>
             </div>
-            <div class="container">
-              <a th:href="${link}"
+            <div class="container"
+                 th:if="${link != ''}">
+              <a class="align-middle"
+                 id="link"
+                 th:href="${link}"
                  th:text="${link}"></a>
+              <button class="my-3 ms-3 py-0 px-1 col-auto btn btn-secondary w-auto"
+                      id="copier"
+                      onclick="copyToClipboard()"
+                      type="button">
+                <i class="bi bi-clipboard-plus-fill"></i>
+              </button>
             </div>
           </div>
         </div>
