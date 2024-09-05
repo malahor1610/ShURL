@@ -1,5 +1,6 @@
 package com.github.malahor.shurl
 
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration
@@ -8,11 +9,11 @@ import org.springframework.data.redis.core.RedisTemplate
 
 
 @Configuration
-class RedisConfig {
+class RedisConfig(@Value("\${spring.redis.host}") var host: String, @Value("\${spring.redis.port}") var port: Int) {
 
     @Bean
     fun jedisConnectionFactory(): JedisConnectionFactory {
-        val config = RedisStandaloneConfiguration("redis", 6379)
+        val config = RedisStandaloneConfiguration(host, port)
         return JedisConnectionFactory(config)
     }
 
