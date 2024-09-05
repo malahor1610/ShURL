@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.github.malahor"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.1"
 
 java {
     toolchain {
@@ -33,6 +33,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("redis.clients:jedis:5.1.5")
     implementation("org.apache.commons:commons-lang3:3.17.0")
     implementation("commons-validator:commons-validator:1.9.0")
     compileOnly("org.projectlombok:lombok")
